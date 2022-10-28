@@ -38,7 +38,10 @@ public class Ferrari extends Entidad{
 		public void sumarPuntos(int pp) {
 			puntos+=pp;
 		}
-		
+
+		public void aumentarVida() {
+			vidas++;
+		}
 	
 	   public void crear() {
 		   	Rectangle hitbox = new Rectangle();

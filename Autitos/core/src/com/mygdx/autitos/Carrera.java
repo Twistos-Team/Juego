@@ -19,20 +19,16 @@ public class Carrera {
 	private int tiempo;
 	
     private long lastDropTime;
-    private Texture gotaBuena;
-    private Texture gotaMala;
     private Sound dropSound;
     private Music music;
 	   
-	public Carrera(Texture gotaBuena, Texture gotaMala, Sound ss, Music mm) {
+	public Carrera(Sound ss, Music mm) {
 		dificultad = 999999999;
 		nivel = 0;
 		tiempo = 50;
 		
 		music = mm;
 		dropSound = ss;
-		this.gotaBuena = gotaBuena;
-		this.gotaMala = gotaMala;
 	}
 	
 	public void crear() {
@@ -47,14 +43,18 @@ public class Carrera {
 	
 	public void importarSprites() {
 		sprites = new Array<Texture>();
+		sprites.add(new Texture(Gdx.files.internal("drop.png")));
 		sprites.add(new Texture(Gdx.files.internal("enemigo.png")));
 		sprites.add(new Texture(Gdx.files.internal("moneda.png")));
+		// Corazon 0, Enemigo 1, Moneda 2
 	}
 	
 	private void crearObstaculo() {
-		int rd = MathUtils.random(0,3);
-		if (rd != 0) rd = 0;
-		else rd = 1;
+		int rd = MathUtils.random(0,15);
+		
+		if (rd > 10) rd = 2;
+		else if (rd != 0) rd = 1;
+		
 		
 		Obstaculo oo = new Obstaculo(sprites.get(rd), rd);
 		oo.crear();
@@ -63,7 +63,7 @@ public class Carrera {
 		lastDropTime = TimeUtils.nanoTime();
 	}
 	
-   public void actualizarMovimiento(Ferrari ferrari) { 
+   public boolean actualizarMovimiento(Ferrari ferrari) { 
 	   // generar gotas de lluvia 
 	   tiempo -= 1;
 	   if (tiempo == 0) {
@@ -83,17 +83,22 @@ public class Carrera {
 	      if(hbox.y + 64 < 0) {
 	    	  obstaculos.removeIndex(i); 
 	      }
+	     
 	      if(hbox.overlaps(ferrari.getArea())) { //la gota choca con el tarro
-	    	
-	    	if(oo.getTipo() == 0) { // gota dañina
-	    	  ferrari.dañar();
+	    	  int variable = oo.getTipo();
+	    	  switch(variable) {
+	    	  
+	    	  case 0:
+	    		  ferrari.aumentarVida();
+	    		  break;
+	    	  case 1:
+	    		  ferrari.dañar();
+	    		  break;
+	    	  case 2:
+	    		  ferrari.sumarPuntos(25);
+	    		  break;
+	    	  }
 	    	  obstaculos.removeIndex(i);
-
-	      	}else { // gota a recolectar
-	    	  ferrari.sumarPuntos(25);
-	          dropSound.play();
-	          obstaculos.removeIndex(i);
-	      	}
 	      }
 	      
 	      int pt = ferrari.getPuntos();
@@ -101,7 +106,9 @@ public class Carrera {
 	    	  nivel += 500;
 	    	  dificultad /= 1.2;
 	      }
-	   }   
+	   }
+	   if(ferrari.getVidas() == 0)return false;
+	   else return true;
    }
    
    public void actualizarDibujoLluvia(SpriteBatch batch) { 
@@ -118,6 +125,12 @@ public class Carrera {
    public void destruir() {
 	      dropSound.dispose();
 	      music.dispose();
+   }
+   public void pausar() {
+	  music.stop();
+   }
+   public void continuar() {
+	  music.play();
    }
    
 }
