@@ -28,7 +28,7 @@ public class Autitos extends ApplicationAdapter {
 		 
 		  // load the images for the droplet and the bucket, 64x64 pixels each 	     
 		  Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("CarCrash.wav"));
-		  ferrari = new Ferrari(new Texture(Gdx.files.internal("Autol2.png")),hurtSound);
+		  ferrari = new Ferrari(new Texture(Gdx.files.internal("Ferrari48x99.png")),hurtSound);
           
 	      // load the drop sound effect and the rain background "music" 
          
@@ -70,21 +70,19 @@ public class Autitos extends ApplicationAdapter {
 		font.draw(batch, "Puntos totales: " + ferrari.getPuntos(), 20, 475);
 		font.draw(batch, "Vidas : " + ferrari.getVidas(), 720, 475);
 		//Controlador de vidas
-		if(ferrari.getVidas()<0 ) {}
+		if(ferrari.getVidas() <= 0 ) {
+			font.draw(batch, "PERDISTE", 360, 240);
+		}
 		
-		if (!ferrari.estaHerido()) {
-			// movimiento del tarro desde teclado
+		else if (!ferrari.estaHerido()) {
+			// Movimiento ferrari
 	        ferrari.actualizarMovimiento();        
-			// caida de la lluvia 
+			// Caida de obstaculos
 	        carrera.actualizarMovimiento(ferrari);	   
 		}
 		
-		if (ferrari.getVidas() < 0) {
-			font.draw(batch, "PERDISTE!", 350, 240);
-		}
-		
 		ferrari.dibujar(batch);
-		carrera.actualizarDibujoLluvia(batch);
+		carrera.actualizarDibujoObstaculos(batch);
 		batch.end();	
 	}
 	

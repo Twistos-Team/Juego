@@ -16,10 +16,12 @@ public class Ferrari extends Entidad{
 	   private boolean herido = false;
 	   private int tiempoHeridoMax=50;
 	   private int tiempoHerido;
+	   private int timer;
 	   
 	   public Ferrari(Texture tex, Sound ss) {
 		   setSprite(tex);
 		   setSound(ss);
+		   timer = 50;
 		   crear();
 	   }
 	   
@@ -47,15 +49,16 @@ public class Ferrari extends Entidad{
 		   	Rectangle hitbox = new Rectangle();
 		   	hitbox.x = 800 / 2 - 64 / 2;
 		   	hitbox.y = 20;
-		   	hitbox.width = 40;
-		   	hitbox.height = 82;
+		   	hitbox.width = 48;
+		   	hitbox.height = 99;
 		   	setHitbox(hitbox);
 	   }
+	   
 	   public void dañar() {
 		  vidas--;
 		  herido = true;
 		  tiempoHerido=tiempoHeridoMax;
-		  getSound().play();
+		  //getSound().play();
 	   }
 	   
 	   public void dibujar(SpriteBatch batch) {
@@ -70,7 +73,13 @@ public class Ferrari extends Entidad{
 	   } 
 	   
 	   public void actualizarMovimiento() { 
-		   Rectangle hitbox = getHitbox();
+		   timer -= 1;
+		   if (timer == 0) {
+			   sumarPuntos(1);
+			   timer = 50;
+		   }
+		   
+		   Rectangle hitbox = getArea();
 		   if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) hitbox.x -= velx * Gdx.graphics.getDeltaTime();
 		   if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) hitbox.x += velx * Gdx.graphics.getDeltaTime();
 		   if(Gdx.input.isKeyPressed(Input.Keys.UP)) hitbox.y += velx * Gdx.graphics.getDeltaTime();

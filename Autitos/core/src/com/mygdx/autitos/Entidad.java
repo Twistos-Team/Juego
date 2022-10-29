@@ -8,7 +8,7 @@ public abstract class Entidad {
 	private Rectangle hitbox;
 	private Texture sprite;
 	private Sound sound;
-
+	
 	
 	// ABSTRACTO
 	abstract public void crear();
