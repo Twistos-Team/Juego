@@ -102,9 +102,8 @@ public class Ferrari extends Entidad{
    }
    
    public int estado() {
-	   if (getVidas() <= 0) {
+	   if (getVidas() <= 0) 
 		   return 0;
-	   }
 	   else if (!estaHerido()) {
 		   actualizarMovimiento();
 		   return 1;

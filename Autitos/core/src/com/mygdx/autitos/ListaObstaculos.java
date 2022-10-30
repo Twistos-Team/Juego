@@ -35,8 +35,8 @@ public class ListaObstaculos {
 	}
 	public void importarSonidos() {
 		sounds = new Array<Sound>();
-		sounds.add(Gdx.audio.newSound(Gdx.files.internal("KH-SFX.mp3")));
-		sounds.add(Gdx.audio.newSound(Gdx.files.internal("ULTRAKILL Coin.mp3")));
+		sounds.add(Gdx.audio.newSound(Gdx.files.internal("KH-SFX.wav")));
+		sounds.add(Gdx.audio.newSound(Gdx.files.internal("ULTRAKILL Coin.wav")));
 		sounds.add(Gdx.audio.newSound(Gdx.files.internal("CarCrash.wav")));
 	}
 	

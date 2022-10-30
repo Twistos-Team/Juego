@@ -139,11 +139,13 @@ public class Carrera {
 	private int nivel;
     private long lastDropTime;
     private Music music;
+    private Music gameOver;
 
 	public Carrera() {
 		dificultad = 999999999;
 		nivel = 0;
 		music = Gdx.audio.newMusic(Gdx.files.internal("music.wav"));
+		gameOver = Gdx.audio.newMusic(Gdx.files.internal("FF7GameOverTheme.wav"));
 	}
 
 	public void crear() {
@@ -184,6 +186,9 @@ public class Carrera {
 	   int est = ferrari.estado();
 	   
 	   if (est == 0) {
+		   music.stop();
+		   gameOver.setLooping(true);
+		   gameOver.play();
 		   return false;
 	   }
 	   else if (est == 1) {
