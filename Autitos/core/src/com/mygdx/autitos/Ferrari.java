@@ -2,7 +2,6 @@ package com.mygdx.autitos;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -18,9 +17,10 @@ public class Ferrari extends Entidad{
 	   private int tiempoHerido;
 	   private int timer;
 	   
-	   public Ferrari(Texture tex, Sound ss) {
+	   public Ferrari() {
+		   Texture tex = new Texture(Gdx.files.internal("Ferrari48x99.png"));
 		   setSprite(tex);
-		   setSound(ss);
+		   setSound(null);
 		   timer = 50;
 		   crear();
 	   }
@@ -99,6 +99,17 @@ public class Ferrari extends Entidad{
 	
    public boolean estaHerido() {
 	   return herido;
+   }
+   
+   public int estado() {
+	   if (getVidas() <= 0) {
+		   return 0;
+	   }
+	   else if (!estaHerido()) {
+		   actualizarMovimiento();
+		   return 1;
+	   }
+	   return 2;
    }
 	   
 }

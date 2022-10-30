@@ -5,7 +5,6 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class ListaObstaculos {
@@ -69,30 +68,18 @@ public class ListaObstaculos {
 		// revisar si las gotas cayeron al suelo o chocaron con el tarro
 		   for (int i=0; i < lista.size; i++ ) {
 			  Obstaculo oo = lista.get(i);
-			  Rectangle hbox = oo.getHitbox();
 			  
-			  hbox.y -= 300 * Gdx.graphics.getDeltaTime();
-		      //cae al suelo y se elimina
-		      if(hbox.y + 180 < 0) {
-		    	  lista.removeIndex(i); 
-		      }
-		      if(hbox.overlaps(ferrari.getArea())) { //la gota choca con el tarro
-
-		    	if(oo.getTipo() == 0) ferrari.aumentarVida();
-		      		
-		    	else if (oo.getTipo() == 1) ferrari.sumarPuntos(25);
-		    	
-		    	else ferrari.dañar();
-		    	
-		    	oo.getSound().play();
+			  if (oo.actualizarMovimiento())
+				lista.removeIndex(i);
+			  
+		      if(oo.choque(ferrari))
 		    	lista.removeIndex(i);
-		      }
-		   }   
+		   } 
 	}
 	
 	public void actualizarDibujoObstaculos(SpriteBatch batch) {
 		for (int i=0; i < lista.size; i++ ) {
-			  Obstaculo oo = lista.get(i);
+			  Entidad oo = lista.get(i);
 		      batch.draw(oo.getSprite(), oo.getHitbox().x, oo.getHitbox().y); 
 		   }
 	}

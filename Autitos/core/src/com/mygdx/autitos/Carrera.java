@@ -125,6 +125,7 @@ public class Carrera {
 
 package com.mygdx.autitos;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -132,19 +133,23 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class Carrera {
 	private ListaObstaculos lista;
 
+	private Ferrari ferrari;
+	private Camino carretera;
 	private int dificultad;
 	private int nivel;
     private long lastDropTime;
     private Music music;
 
-	public Carrera(Music mm) {
+	public Carrera() {
 		dificultad = 999999999;
 		nivel = 0;
-		music = mm;
+		music = Gdx.audio.newMusic(Gdx.files.internal("music.wav"));
 	}
 
 	public void crear() {
 		lista = new ListaObstaculos();
+		ferrari = new Ferrari();
+		carretera = new Camino();
 		crearObstaculo();
 	    
 	    music.setLooping(true);
@@ -156,7 +161,7 @@ public class Carrera {
 		lastDropTime = TimeUtils.nanoTime();
 	}
 
-   public void actualizarMovimiento(Ferrari ferrari) { 
+   public void actualizarMovimiento() { 
 
 	   if(TimeUtils.nanoTime() - lastDropTime > dificultad) crearObstaculo();
 	   lista.actualizarMovimiento(ferrari);
@@ -170,10 +175,38 @@ public class Carrera {
 
    public void actualizarDibujoObstaculos(SpriteBatch batch) { 
 	  lista.actualizarDibujoObstaculos(batch);
+	  ferrari.dibujar(batch);
    }
+   
+   public boolean estadoCarrera(SpriteBatch batch) {
+	   // False - Lose
+	   // True - Still Playing
+	   int est = ferrari.estado();
+	   
+	   if (est == 0) {
+		   return false;
+	   }
+	   else if (est == 1) {
+		   ferrari.dibujar(batch);
+		   actualizarMovimiento();
+	   }
+	   carretera.actualizarMovimiento(batch);
+	   actualizarDibujoObstaculos(batch);
+	   return true;
+   }
+   
+   public int getPuntosF() {
+	   return ferrari.getPuntos();
+   }
+   
+   public int getVidasF() {
+	   return ferrari.getVidas();
+   }
+   
    public void destruir() {
 	      music.dispose();
 	      lista.clear();
+	      ferrari.destruir();
    }
 
 }

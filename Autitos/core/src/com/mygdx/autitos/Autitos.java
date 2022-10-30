@@ -4,9 +4,6 @@ package com.mygdx.autitos;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,84 +16,53 @@ public class Autitos extends ApplicationAdapter {
        private OrthographicCamera camera;
 	   private SpriteBatch batch;	   
 	   private BitmapFont font;
-	   private Ferrari ferrari;
 	   private Carrera carrera;
-	   private Texture carretera;
+	   private Texture gos;
+
 	@Override
 	public void create () {
-		 font = new BitmapFont(); // use libGDX's default Arial font
-		 
-		  // load the images for the droplet and the bucket, 64x64 pixels each 	     
-		  Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("CarCrash.wav"));
-		  ferrari = new Ferrari(new Texture(Gdx.files.internal("Ferrari48x99.png")),hurtSound);
-          
-	      // load the drop sound effect and the rain background "music" 
-         
-	      Music music = Gdx.audio.newMusic(Gdx.files.internal("music.wav"));
-          carrera = new Carrera(music);
-          crearCarretera();
-	      
-	      // camera
+		  font = new BitmapFont(); // use libGDX's default Arial font
 	      camera = new OrthographicCamera();
 	      camera.setToOrtho(false, 800, 480);
 	      batch = new SpriteBatch();
-	      // creacion del tarro
-	      
-	      // creacion de la lluvia
+	      carrera = new Carrera();
 	      carrera.crear();
+	      gos = new Texture(Gdx.files.internal("DS3.jpg"));
 	}
 	
-	public void crearCarretera() {
-		carretera = new Texture(Gdx.files.internal("Carretera.png"));
-	}
-	
-
-
 	@Override
 	public void render () {
 		//limpia la pantalla con color azul obscuro.
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 		
-		
 		//actualizar matrices de la cámara
 		camera.update();
+		
 		//actualizar 
 		batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		
-		batch.draw(carretera, 0, 0); 
+		batch.begin(); 
 		
 		//dibujar textos
-		font.draw(batch, "Puntos totales: " + ferrari.getPuntos(), 20, 475);
-		font.draw(batch, "Vidas : " + ferrari.getVidas(), 720, 475);
+		
+		
 		//Controlador de vidas
-		if(ferrari.getVidas() <= 0 ) {
-			font.draw(batch, "PERDISTE", 360, 240);
+		if (!carrera.estadoCarrera(batch)) {
+			batch.draw(gos, 0, 0);
 		}
+		else 
+			font.draw(batch, "Vidas : " + carrera.getVidasF(), 720, 475);
 		
-		else if (!ferrari.estaHerido()) {
-			// Movimiento ferrari
-	        ferrari.actualizarMovimiento();        
-			// Caida de obstaculos
-	        carrera.actualizarMovimiento(ferrari);	   
-		}
-		
-		ferrari.dibujar(batch);
-		carrera.actualizarDibujoObstaculos(batch);
+		font.draw(batch, "Puntos totales: " + carrera.getPuntosF(), 20, 475);
 		batch.end();	
 	}
 	
 	@Override
 	public void dispose () {
-	      ferrari.destruir();
           carrera.destruir();
 	      batch.dispose();
 	      font.dispose();
 	}
-	
-	public void createSounds() {
-		
-	}
+
 	
 	public SpriteBatch getBatch() {
 		return batch;
