@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
-public class ListaObstaculos {
+public class ListaObstaculos{
 	private Array<Obstaculo> lista;
 	private Array<Texture> sprites;
 	private Array<Sound> sounds;

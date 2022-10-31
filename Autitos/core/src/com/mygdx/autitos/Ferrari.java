@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
 
-public class Ferrari extends Entidad{
+public class Ferrari extends Entidad implements Movil{
 	   private int vidas = 3;
 	   private int puntos = 0;
 	   private int velx = 400;

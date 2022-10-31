@@ -130,7 +130,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Carrera {
+public class Carrera implements Movil{
 	private ListaObstaculos lista;
 
 	private Ferrari ferrari;
