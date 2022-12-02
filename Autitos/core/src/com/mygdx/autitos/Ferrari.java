@@ -9,6 +9,9 @@ import com.badlogic.gdx.math.Rectangle;
 
 
 public class Ferrari extends Entidad implements Movil{
+	   //Singleton   
+	   private static Ferrari instance;
+	
 	   private int vidas = 3;
 	   private int puntos = 0;
 	   private int velx = 400;
@@ -17,13 +20,20 @@ public class Ferrari extends Entidad implements Movil{
 	   private int tiempoHerido;
 	   private int timer;
 	   
-	   public Ferrari() {
-		   Texture tex = new Texture(Gdx.files.internal("Ferrari48x99.png"));
-		   setSprite(tex);
+	   private Ferrari() {
+		   setSprite(new Texture(Gdx.files.internal("Ferrari48x99.png")));
 		   setSound(null);
 		   timer = 50;
 		   crear();
 	   }
+
+	   public static synchronized Ferrari getInstance() {
+	       if (instance == null) {
+	           instance = new Ferrari();
+	       }
+	       return instance;
+	   }
+	   
 	   
 	    public int getVidas() {
 			return vidas;

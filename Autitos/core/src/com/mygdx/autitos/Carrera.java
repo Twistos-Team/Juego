@@ -150,7 +150,7 @@ public class Carrera implements Movil{
 
 	public void crear() {
 		lista = new ListaObstaculos();
-		ferrari = new Ferrari();
+		ferrari = Ferrari.getInstance();
 		carretera = new Camino();
 		crearObstaculo();
 	    

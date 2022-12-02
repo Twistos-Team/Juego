@@ -1,43 +1,20 @@
 package com.mygdx.autitos;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import patterndesign.DefObstaculo;
+import patterndesign.ObsBuilder;
 
 public class ListaObstaculos{
 	private Array<Obstaculo> lista;
-	private Array<Texture> sprites;
-	private Array<Sound> sounds;
 	
 	public ListaObstaculos() {
 		lista = new Array<Obstaculo>();
-		importarSprites();
-		importarSonidos();
 	}
 	
 	public void clear() {
 		lista.clear();
-		sprites.clear();
-		sounds.clear();
-	}
-	
-	public void importarSprites() {
-		sprites = new Array<Texture>();
-		sprites.add(new Texture(Gdx.files.internal("Heart.png")));
-		sprites.add(new Texture(Gdx.files.internal("moneda.png")));
-		sprites.add(new Texture(Gdx.files.internal("BlueCar48x105.png")));
-		sprites.add(new Texture(Gdx.files.internal("YCar48x105.png")));
-		sprites.add(new Texture(Gdx.files.internal("BBCar48x105.png")));
-		sprites.add(new Texture(Gdx.files.internal("Truck70x176.png")));
-	}
-	public void importarSonidos() {
-		sounds = new Array<Sound>();
-		sounds.add(Gdx.audio.newSound(Gdx.files.internal("KH-SFX.wav")));
-		sounds.add(Gdx.audio.newSound(Gdx.files.internal("ULTRAKILL Coin.wav")));
-		sounds.add(Gdx.audio.newSound(Gdx.files.internal("CarCrash.wav")));
 	}
 	
 	public void crearObstaculo() {
@@ -53,14 +30,35 @@ public class ListaObstaculos{
 		
 		if (rd > 18) rd = 2;
 		else if (rd != 0) rd = 1;
-		Sound sd = sounds.get(rd);
 		
-		if (rd == 2) {
+		if (rd == 2)
 			rd = MathUtils.random(2,5);
+		
+		DefObstaculo defO = new DefObstaculo();
+		ObsBuilder builder = new ObsBuilder();
+		
+		switch(rd) {
+			case 0: defO.createHeart(builder);
+				    break;
+		
+			case 1: defO.createCoin(builder);
+				    break;
+		
+			case 2: defO.createBlueCar(builder);
+				    break;
+		
+			case 3: defO.createYellowCar(builder);
+				    break;
+				
+			case 4: defO.createBlackCar(builder);
+		 		    break;
+		
+			case 5: defO.createTruck(builder);
+				    break;
 		}
 		
-		Obstaculo oo = new Obstaculo(sprites.get(rd), sd, rd);
-		oo.crear();
+		
+		Obstaculo oo = builder.getObstaculo();
 		lista.add(oo);
 	}
 	

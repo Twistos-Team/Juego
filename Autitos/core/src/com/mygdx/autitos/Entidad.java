@@ -10,9 +10,6 @@ public abstract class Entidad {
 	private Sound sound;
 	
 	
-	// ABSTRACTO
-	abstract public void crear();
-	
 	// METODOS
 	public Rectangle getHitbox() {
 		return hitbox;
