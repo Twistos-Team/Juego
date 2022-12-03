@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class Camino extends Entidad{
+import patterndesign.MovementStrat;
+
+public class Camino extends Entidad implements MovementStrat{
 	
 	
 	public Camino(){
@@ -27,11 +29,15 @@ public class Camino extends Entidad{
 		return hb;
 	}
 	
-	public void actualizarMovimiento(SpriteBatch batch) {
+	public void actualizarMovimiento() {
 		Rectangle hb = getHitbox();
 		hb.y -= 480 * Gdx.graphics.getDeltaTime();
 		if (hb.y <= -480)
 			hb.y = 0;
+	}
+	
+	public void dibujar(SpriteBatch batch) {
+		Rectangle hb = getHitbox();
 		batch.draw(getSprite(), hb.x, hb.y);
 	}
 }

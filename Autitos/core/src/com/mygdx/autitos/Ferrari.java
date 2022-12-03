@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 
+import patterndesign.MovementStrat;
 
-public class Ferrari extends Entidad implements Movil{
+
+public class Ferrari extends Entidad implements MovementStrat{
 	   //Singleton   
 	   private static Ferrari instance;
 	
@@ -115,7 +117,6 @@ public class Ferrari extends Entidad implements Movil{
 	   if (getVidas() <= 0) 
 		   return 0;
 	   else if (!estaHerido()) {
-		   actualizarMovimiento();
 		   return 1;
 	   }
 	   return 2;

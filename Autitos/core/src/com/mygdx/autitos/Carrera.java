@@ -130,7 +130,10 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.TimeUtils;
 
-public class Carrera implements Movil{
+import patterndesign.MovementStrat;
+
+
+public class Carrera{
 	private ListaObstaculos lista;
 
 	private Ferrari ferrari;
@@ -164,7 +167,15 @@ public class Carrera implements Movil{
 	}
 
    public void actualizarMovimiento() { 
-
+	   MovementStrat strat;
+	   
+	   for(int i = 0 ; i <= 1; i++) {
+		   if (i==0)strat = carretera;
+		   else strat = ferrari;
+		   
+		   strat.actualizarMovimiento();
+	   }
+	     
 	   if(TimeUtils.nanoTime() - lastDropTime > dificultad) crearObstaculo();
 	   lista.actualizarMovimiento(ferrari);
 	   
@@ -195,7 +206,7 @@ public class Carrera implements Movil{
 		   ferrari.dibujar(batch);
 		   actualizarMovimiento();
 	   }
-	   carretera.actualizarMovimiento(batch);
+	   carretera.dibujar(batch);
 	   actualizarDibujoObstaculos(batch);
 	   return true;
    }
